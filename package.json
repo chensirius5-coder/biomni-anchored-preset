@@ -1,0 +1,43 @@
+{
+  "name": "biomni-anchored-dsh-preset",
+  "version": "1.0.0",
+  "description": "A DeepSeek Harness agent preset that wraps the locally deployed Biomni biomedical AI engine with the Anchored Standard (experimental) bootstrap.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "scripts": {
+    "check": "node scripts/check-syntax.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "agent-preset",
+    "biomni",
+    "biomedical-ai",
+    "bioinformatics"
+  ],
+  "files": [
+    "preset.yml",
+    "agent.cordis.yml",
+    "biomni-agent-tools.mjs",
+    "biomni_bridge.py",
+    "compaction-epoch.mjs",
+    "custom-bash.mjs",
+    "dev-tool-search.mjs",
+    "instruction-hint.mjs",
+    "skill-search.mjs",
+    "tool-bootstrap.mjs",
+    "skills",
+    "scripts/install.sh",
+    "scripts/uninstall.sh"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/biomni-anchored-preset.git"
+  }
+}

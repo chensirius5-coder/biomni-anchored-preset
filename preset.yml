@@ -1,0 +1,2 @@
+name: Biomni (Anchored)
+description: 以 Anchored Standard (experimental) 为底座的本地 Biomni 生物医学 Agent。保留首请求 Minimal 工具对锚定；提升后常驻 biomni_status / biomni_tools / biomni_run / biomni_know_how，并可按需解锁 biomni_data / biomni_python。全部生物医学能力复用本机 Biomni Python 栈（21 个模块、218 个工具、数据湖、know-how、7860 Gradio 引擎）。
