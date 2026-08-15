@@ -39,6 +39,13 @@ chmod -R u+rwX "$TARGET"
 if [ -f "$TARGET/agent.cordis.yml" ] && [ -f "$TARGET/preset.yml" ]; then
   echo "installed: $TARGET"
   echo "restart dsh web (or open a new session) and select Biomni (Anchored)"
+  BIOMNI_HOME="${BIOMNI_HOME:-$HOME/Biomni}"
+  if [ -x "$BIOMNI_HOME/.venv/bin/python" ] && [ -f "$BIOMNI_HOME/run_biomni.py" ]; then
+    echo "Biomni engine detected: $BIOMNI_HOME"
+  else
+    echo "note: Biomni engine not found at $BIOMNI_HOME"
+    echo "bootstrap it with: $REPO_DIR/scripts/setup-biomni.sh"
+  fi
 else
   echo "error: install verification failed" >&2
   exit 1

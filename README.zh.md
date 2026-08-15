@@ -9,11 +9,24 @@
 ```bash
 git clone https://github.com/your-org/biomni-anchored-preset.git
 cd biomni-anchored-preset
+
+# 1. 先引导安装 Biomni 引擎（默认 ~/Biomni）
+./scripts/setup-biomni.sh
+
+# 2. 再安装本 preset
 ./scripts/install.sh            # 安装到 ~/.dsh/.agent-presets/biomni
 ./scripts/install.sh --force    # 覆盖安装
 ```
 
+引导完成后编辑 `~/Biomni/.env` 填入 LLM API Key。数据湖约 11 GB，按需单独下载：
+
+```bash
+~/Biomni/.venv/bin/python ~/Biomni/run_biomni.py --download-datalake "list data lake files"
+```
+
 然后在 DSH Web 新建会话，选择 **Biomni (Anchored)**。
+
+> 本仓库不包含 Biomni Python 包、虚拟环境、约 11 GB 数据湖和任何 API Key；这些属于用户本地安装和隐私配置。
 
 卸载：
 

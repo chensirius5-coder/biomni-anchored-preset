@@ -16,11 +16,15 @@ The preset does **not** reimplement Biomni. It exposes the existing local engine
 ## Requirements
 
 - DeepSeek Harness with agent presets enabled (a writable user preset root at `~/.dsh/.agent-presets`).
-- A local Biomni deployment:
-  - `~/Biomni/run_biomni.py`
-  - `~/Biomni/.venv/bin/python`
-  - `~/Biomni/.env` with a working LLM API configuration
-  - optional but recommended: Gradio running on `127.0.0.1:7860`
+- A local Biomni engine. The repository intentionally does **not** include
+  Biomni itself, its Python virtualenv, its ~11 GB data lake, or API keys.
+  Use the provided bootstrap:
+  ```bash
+  ./scripts/setup-biomni.sh
+  ```
+  This installs the `biomni` package, creates `~/Biomni/.venv`, copies the
+  portable launcher and `env.example`. The data lake is downloaded separately
+  and only when you opt in.
 - Node.js >= 20.6 for the preset plugins (the DSH host already satisfies this).
 
 ## Install
@@ -28,8 +32,20 @@ The preset does **not** reimplement Biomni. It exposes the existing local engine
 ```bash
 git clone https://github.com/your-org/biomni-anchored-preset.git
 cd biomni-anchored-preset
+
+# 1. Bootstrap the Biomni engine (~/Biomni by default)
+./scripts/setup-biomni.sh
+
+# 2. Install this preset
 ./scripts/install.sh            # install to ~/.dsh/.agent-presets/biomni
 ./scripts/install.sh --force    # replace an existing installation
+```
+
+After the bootstrap, edit `~/Biomni/.env` with the LLM API key. The data lake
+is optional; fetch it once when needed:
+
+```bash
+~/Biomni/.venv/bin/python ~/Biomni/run_biomni.py --download-datalake "list data lake files"
 ```
 
 Or install manually:
@@ -126,7 +142,10 @@ The tests do not require a real Biomni installation and run on plain Ubuntu in C
 ├── skills/
 │   ├── biomni-local-engine/
 │   └── neonatal-cardiac-regeneration/
+├── env.example                   # copy to ~/Biomni/.env and edit
 ├── scripts/
+│   ├── setup-biomni.sh           # bootstrap Biomni package + launcher + .env
+│   ├── run_biomni.py             # portable provider-neutral Biomni launcher
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── check-syntax.mjs

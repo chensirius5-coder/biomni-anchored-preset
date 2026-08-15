@@ -21,8 +21,8 @@ jobs:
       - name: Check preset syntax
         run: npm run check
 
-      - name: Check Python bridge syntax
-        run: python -m py_compile biomni_bridge.py
+      - name: Check Python bridge and launcher syntax
+        run: python -m py_compile biomni_bridge.py scripts/run_biomni.py
 
       - name: Run unit tests
         run: npm test

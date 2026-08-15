@@ -35,3 +35,15 @@ DSH agent session (Biomni Anchored preset)
 - `dev-tool-search.mjs` `UNLOCKABLE_INDEX` — advertise additional tools.
 - `skills/` — add preset-local skills; they are discovered through
   `skill-filesystem` `customSkillDirs`.
+
+## What is not vendored
+
+This repository is an integration layer only. It deliberately excludes:
+
+- the `biomni` Python package (install with `scripts/setup-biomni.sh`)
+- `~/Biomni/.venv` and all Python/R/conda environments
+- the ~11 GB Biomni data lake (`run_biomni.py --download-datalake`)
+- `.env` files and API keys (copy `env.example` to `~/Biomni/.env`)
+
+The setup script creates the engine skeleton and the launcher; Biomni itself
+is fetched from PyPI or the upstream GitHub repository.

@@ -11,7 +11,8 @@
   "scripts": {
     "check": "node scripts/check-syntax.mjs",
     "test": "node --test test/*.test.mjs",
-    "verify": "npm run check && npm test"
+    "verify": "npm run check && npm test",
+    "setup": "./scripts/setup-biomni.sh"
   },
   "keywords": [
     "deepseek-harness",
@@ -33,8 +34,12 @@
     "skill-search.mjs",
     "tool-bootstrap.mjs",
     "skills",
+    "env.example",
     "scripts/install.sh",
-    "scripts/uninstall.sh"
+    "scripts/uninstall.sh",
+    "scripts/setup-biomni.sh",
+    "scripts/run_biomni.py",
+    "scripts/check-syntax.mjs"
   ],
   "repository": {
     "type": "git",

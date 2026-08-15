@@ -4,7 +4,7 @@
 
 This project is an integration layer for the separately installed Biomni
 package. It does not vendor Biomni source code. Biomni is Copyright by its
-contributors and is distributed under its own license:
+contributors and is distributed under the Apache-2.0 license:
 
 https://github.com/snap-stanford/Biomni
 
