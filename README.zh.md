@@ -44,7 +44,11 @@ cd biomni-anchored-preset
 
 ## 配置
 
-`biomniHome` 默认自动检测为 `~/Biomni`，可用 `BIOMNI_HOME` 环境变量覆盖；`gradioBaseUrl` 可用 `BIOMNI_GRADIO_URL` 覆盖。
+Gradio 是可选的：`biomni_run` 默认探测 `http://127.0.0.1:7860`，离线、缺失或禁用时自动退回 direct 模式。其他用户如果没有本地 Gradio，不需要做任何配置即可使用。
+
+- `biomniHome` 默认自动检测为 `~/Biomni`，可用 `BIOMNI_HOME` 覆盖。
+- `gradioBaseUrl` 默认 `http://127.0.0.1:7860`；远程服务用 `BIOMNI_GRADIO_URL=http://host:port` 指定。
+- 想完全跳过 Gradio 探测，设置 `BIOMNI_GRADIO_URL=disabled`，`biomni_run` 将始终使用 direct 模式。
 
 ## 开发与测试
 

@@ -9,7 +9,7 @@ The preset does **not** reimplement Biomni. It exposes the existing local engine
 - **Anchored bootstrap preserved** — request #1 still sees only persistent `bash` + `str_replace_editor`; automatic instruction/skill injections stay suppressed.
 - **Biomni core tools resident after promotion** — `biomni_status`, `biomni_tools`, `biomni_run`, `biomni_know_how`.
 - **Full catalog on demand** — the live 218-tool / 21-module catalog is read from the installed `biomni` package, not hard-coded.
-- **Gradio-first execution with direct fallback** — when `http://127.0.0.1:7860` is online, `biomni_run` uses the Gradio simple-call REST/SSE protocol with attachments and per-session history; otherwise it runs `run_biomni.py` directly.
+- **Gradio optional, direct fallback always available** — auto mode probes the configured Gradio URL and falls back to `run_biomni.py` when that service is absent. No Gradio process is required for other users.
 - **Unlockable deep access** — `biomni_data` searches the 76-entry data lake and `biomni_python` executes arbitrary Python in `~/Biomni/.venv`.
 - **Bundled skills** — `biomni-local-engine` documents this preset; `neonatal-cardiac-regeneration` carries the Thorp-lab Immunity 2025 workflow.
 
@@ -85,13 +85,19 @@ The preset config is in `agent.cordis.yml`:
 - id: biomni-agent-tools
   name: ./biomni-agent-tools.mjs
   config:
-    gradioBaseUrl: http://127.0.0.1:7860
+    # Gradio URL is optional; the default is http://127.0.0.1:7860
+    # gradioBaseUrl: http://127.0.0.1:7860
     gradioApiPath: /gradio_api
     defaultTimeoutMs: 900000
     maxOutputChars: 60000
 ```
 
-`biomniHome` defaults to `~/Biomni` and can be overridden with the `BIOMNI_HOME` environment variable. `gradioBaseUrl` can be overridden with `BIOMNI_GRADIO_URL`.
+- `biomniHome` defaults to `~/Biomni`; override with `BIOMNI_HOME`.
+- `gradioBaseUrl` defaults to `http://127.0.0.1:7860`; override with
+  `BIOMNI_GRADIO_URL` for a remote service, or set it to `disabled` to skip
+  probing and always use direct mode.
+- When Gradio is missing, offline, or disabled, `biomni_run` automatically
+  uses direct mode, so a clean Biomni installation without Gradio works too.
 
 ## Development
 

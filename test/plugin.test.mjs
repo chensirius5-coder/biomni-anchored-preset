@@ -132,6 +132,14 @@ test('biomni_run direct mode skips Gradio probing and runs run_biomni.py', async
   assert.match(value.text, /hello biomni/)
 })
 
+test('biomni_run auto mode falls back to direct when Gradio is disabled', async () => {
+  const ctx = makeContext()
+  mod.apply(ctx, { ...config, gradioBaseUrl: 'disabled' })
+  const value = await ctx.toolMap.get('biomni_run').execute({ task: 'portable run', mode: 'auto' }, {})
+  assert.match(value.text, /FAKE DIRECT RUN/)
+  assert.match(value.text, /portable run/)
+})
+
 test('biomni_python executes in the Biomni venv', async () => {
   const ctx = makeContext()
   mod.apply(ctx, config)

@@ -119,7 +119,14 @@
   name: ./biomni-agent-tools.mjs
   config:
     # biomniHome is auto-detected as ~/Biomni; override with BIOMNI_HOME.
-    gradioBaseUrl: http://127.0.0.1:7860
+    #
+    # Gradio is OPTIONAL. In auto mode biomni_run probes the configured URL
+    # and falls back to direct run_biomni.py execution when it is offline.
+    # Default URL when unset: http://127.0.0.1:7860
+    #   - remote service:  set BIOMNI_GRADIO_URL=http://host:port
+    #   - direct-only:     set BIOMNI_GRADIO_URL=disabled (or uncomment
+    #                      gradioBaseUrl and set it to "disabled")
+    # gradioBaseUrl: http://127.0.0.1:7860
     gradioApiPath: /gradio_api
     defaultTimeoutMs: 900000
     maxOutputChars: 60000

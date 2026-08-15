@@ -5,7 +5,7 @@
  * Nothing biomedical is reimplemented here. The tools expose the existing
  * local engine surfaces:
  *
- *  - `biomni_status`   — Gradio 7860 reachability + local Biomni install facts
+ *  - `biomni_status`   — configured Gradio reachability + local Biomni install facts
  *  - `biomni_tools`    — search the live catalog of all 218 Biomni tool
  *                        functions (21 modules) read from the installed package
  *  - `biomni_run`      — run one Biomni task through the Gradio simple-call
@@ -60,6 +60,17 @@ function toJsonSchema(spec) {
   return { type: 'object', properties, required, additionalProperties: false }
 }
 
+/**
+ * Normalize a Gradio base URL. Empty strings and the words "disabled" /
+ * "none" mean "do not probe Gradio and always use direct mode". A configured
+ * value keeps its explicit spelling; only a trailing slash is trimmed.
+ */
+function normalizeGradioBase(value) {
+  const text = typeof value === 'string' ? value.trim() : ''
+  if (text.length === 0 || text.toLowerCase() === 'disabled' || text.toLowerCase() === 'none') return null
+  return text.replace(/\/+$/, '')
+}
+
 /** Resolve plugin config against local defaults. */
 function resolveConfig(config) {
   const home = homedir()
@@ -74,7 +85,8 @@ function resolveConfig(config) {
     runScript,
     dataLakeDir,
     sitePackages,
-    gradioBaseUrl: config?.gradioBaseUrl ?? process.env.BIOMNI_GRADIO_URL ?? DEFAULT_GRADIO_BASE,
+    gradioBaseUrl: normalizeGradioBase(config?.gradioBaseUrl ?? process.env.BIOMNI_GRADIO_URL ?? DEFAULT_GRADIO_BASE),
+    gradioEnabled: normalizeGradioBase(config?.gradioBaseUrl ?? process.env.BIOMNI_GRADIO_URL ?? DEFAULT_GRADIO_BASE) !== null,
     gradioApiPath: config?.gradioApiPath ?? DEFAULT_GRADIO_API_PATH,
     defaultTimeoutMs: Number.isSafeInteger(config?.defaultTimeoutMs) && config.defaultTimeoutMs > 0
       ? config.defaultTimeoutMs
@@ -99,8 +111,11 @@ async function fetchWithTimeout(url, init, timeoutMs, signal) {
   }
 }
 
-/** Probe the local Biomni Gradio service. */
+/** Probe the configured Biomni Gradio service. */
 async function probeGradio(cfg, signal) {
+  if (cfg.gradioBaseUrl === null) {
+    return { online: false, error: 'Gradio disabled by configuration (direct mode only)' }
+  }
   try {
     const res = await fetchWithTimeout(
       `${cfg.gradioBaseUrl}${cfg.gradioApiPath}/info`,
@@ -322,7 +337,7 @@ export function apply(ctx, config) {
 
   ctx.tools.register({
     name: 'biomni_status',
-    description: 'Check the locally deployed Biomni engine: Gradio service reachability (http://127.0.0.1:7860), install paths, tool-catalog size, know-how documents, and data-lake directory. Call this before biomni_run when the engine may be offline.',
+    description: 'Check the locally deployed Biomni engine: configured Gradio service reachability, install paths, tool-catalog size, know-how documents, and data-lake directory. Call this before biomni_run when the engine may be offline or configured for direct mode.',
     parameters: toJsonSchema({}),
     output: outputOf(),
     async execute(_args, exec) {
@@ -401,7 +416,7 @@ export function apply(ctx, config) {
 
   ctx.tools.register({
     name: 'biomni_run',
-    description: 'Run a biomedical task on the locally deployed Biomni agent and return the final answer plus executor trace. Uses the Gradio 7860 engine when online (streaming snapshots, attachments, and same-session continuation) and falls back to direct ~/Biomni/.venv/bin/python run_biomni.py when offline. This is the full Biomni agent: all 218 tools, code execution, data-lake retrieval, and know-how.',
+    description: 'Run a biomedical task on the locally deployed Biomni agent and return the final answer plus executor trace. In auto mode it uses the configured Gradio service when reachable (streaming snapshots, attachments, and same-session continuation) and otherwise falls back to direct ~/Biomni/.venv/bin/python run_biomni.py. Gradio can be a remote URL via BIOMNI_GRADIO_URL or disabled entirely for direct-only deployments. This is the full Biomni agent: all 218 tools, code execution, data-lake retrieval, and know-how.',
     parameters: toJsonSchema({
       task: { type: 'string', required: true, description: 'full biomedical task description for Biomni' },
       mode: { type: 'string', required: false, description: 'auto (default), gradio, or direct' },
@@ -432,7 +447,7 @@ export function apply(ctx, config) {
 
       if (mode === 'direct' || (mode === 'auto' && !gradio.online)) {
         if (mode === 'gradio') {
-          return { text: `Biomni Gradio engine is offline: ${gradio.error ?? 'unreachable'}. Use mode=direct or start ~/Biomni Gradio first.` }
+          return { text: `Biomni Gradio engine is unavailable: ${gradio.error ?? 'unreachable'}. Use mode=direct, or configure BIOMNI_GRADIO_URL / gradioBaseUrl to point at the correct service.` }
         }
         const fileNotes = files.map((path) => resolve(sessionCwd, path)).map((path) => `- ${path}`).join('\n')
         const taskText = fileNotes ? `${task}\n\nAttached local files (read them directly from disk):\n${fileNotes}` : task
