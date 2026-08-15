@@ -118,7 +118,7 @@
 - id: biomni-agent-tools
   name: ./biomni-agent-tools.mjs
   config:
-    biomniHome: /Users/ch8rry_spe/Biomni
+    # biomniHome is auto-detected as ~/Biomni; override with BIOMNI_HOME.
     gradioBaseUrl: http://127.0.0.1:7860
     gradioApiPath: /gradio_api
     defaultTimeoutMs: 900000

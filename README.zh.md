@@ -44,7 +44,7 @@ cd biomni-anchored-preset
 
 ## 配置
 
-修改 `agent.cordis.yml` 中 `biomni-agent-tools` 一行的 `biomniHome` 与 `gradioBaseUrl`。运行时也可用 `BIOMNI_HOME` / `BIOMNI_GRADIO_URL` 环境变量覆盖。
+`biomniHome` 默认自动检测为 `~/Biomni`，可用 `BIOMNI_HOME` 环境变量覆盖；`gradioBaseUrl` 可用 `BIOMNI_GRADIO_URL` 覆盖。
 
 ## 开发与测试
 

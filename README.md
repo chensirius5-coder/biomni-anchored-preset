@@ -85,14 +85,13 @@ The preset config is in `agent.cordis.yml`:
 - id: biomni-agent-tools
   name: ./biomni-agent-tools.mjs
   config:
-    biomniHome: /Users/ch8rry_spe/Biomni
     gradioBaseUrl: http://127.0.0.1:7860
     gradioApiPath: /gradio_api
     defaultTimeoutMs: 900000
     maxOutputChars: 60000
 ```
 
-`biomniHome` and `gradioBaseUrl` are the two values to change when moving to another machine. `BIOMNI_HOME` and `BIOMNI_GRADIO_URL` environment variables override the YAML defaults at runtime.
+`biomniHome` defaults to `~/Biomni` and can be overridden with the `BIOMNI_HOME` environment variable. `gradioBaseUrl` can be overridden with `BIOMNI_GRADIO_URL`.
 
 ## Development
 
