@@ -2,7 +2,7 @@
 
 可发布、可安装的 [DeepSeek Harness](https://github.com/deepseek-harness/deepseek-harness) agent preset：用 `Anchored Standard (experimental)` 启动逻辑包裹本机部署的 [Biomni](https://github.com/snap-stanford/Biomni) 生物医学引擎。
 
-本工程不重新实现 Biomni，而是把本机已有的完整能力暴露为一组 DSH 工具：A1 agent、218 个工具（21 个模块）、数据湖、know-how 文档。
+本工程不重新实现 Biomni，而是把已有的完整能力暴露为一组 DSH 工具：A1 agent、218 个工具（21 个模块）、数据湖、know-how 文档。
 
 ## 安装
 
