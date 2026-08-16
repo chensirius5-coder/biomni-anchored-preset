@@ -91,7 +91,7 @@ npm run verify
 
 A publishable, installable [DeepSeek Harness](https://github.com/deepseek-harness/deepseek-harness) agent preset that wraps a locally deployed [Biomni](https://github.com/snap-stanford/Biomni) biomedical AI engine with the `Anchored Standard (experimental)` bootstrap.
 
-The preset does **not** reimplement Biomni. It exposes the existing local engine through first-class DSH tools and keeps the complete local Biomni capability surface: the A1 agent, all 218 tool functions across 21 modules, the data lake, and know-how documents.
+This project does not reimplement Biomni; instead, it exposes its full existing capabilities as a set of DSH tools: the A1 agent, 218 tools across 21 modules, a data lake, and know-how documentation.
 
 ## Highlights
 
